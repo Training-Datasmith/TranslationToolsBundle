@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is authored by PrestaShop SA and Contributors <contact@prestashop.com>
  *
@@ -110,7 +111,8 @@ class SmartyExtractorTest extends TestCase
     {
         $messageCatalogue = new MessageCatalogue('en');
         $this->buildExtractor(SmartyExtractor::INCLUDE_EXTERNAL_MODULES)->extract(
-            parent::getResource('directory/'), $messageCatalogue
+            parent::getResource('directory/'),
+            $messageCatalogue
         );
 
         $catalogue = $messageCatalogue->all();

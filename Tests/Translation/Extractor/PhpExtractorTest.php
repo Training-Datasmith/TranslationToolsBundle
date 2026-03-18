@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is authored by PrestaShop SA and Contributors <contact@prestashop.com>
  *

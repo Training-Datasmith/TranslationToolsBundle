@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PrestaShop\TranslationToolsBundle\Tests\resources\fixtures;
 
 use Symfony\Contracts\Translation\TranslatorInterface;

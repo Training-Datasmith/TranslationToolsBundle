@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file is authored by PrestaShop SA and Contributors <contact@prestashop.com>
  *
@@ -49,9 +51,11 @@ class TwigExtractor extends BaseTwigExtractor implements ExtractorInterface
         $this->twig = $twig;
         $this->twigLexer = new Lexer($this->twig);
 
-        $this->twig->registerUndefinedFunctionCallback(function (): void {});
+        $this->twig->registerUndefinedFunctionCallback(function (): void {
+        });
 
-        $this->twig->registerUndefinedFilterCallback(function (): void {});
+        $this->twig->registerUndefinedFilterCallback(function (): void {
+        });
     }
 
     public function extract($resource, MessageCatalogue $catalogue): void

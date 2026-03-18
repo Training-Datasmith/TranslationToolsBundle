@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PrestaShop\TranslationToolsBundle\Tests\Translation\Compiler\Smarty;
 
 use PrestaShop\TranslationToolsBundle\Tests\PhpUnit\TestCase;

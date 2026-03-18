@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file is authored by PrestaShop SA and Contributors <contact@prestashop.com>
  *
@@ -11,7 +13,6 @@
 namespace PrestaShop\TranslationToolsBundle\Translation\Extractor\Visitor\Translation;
 
 use PhpParser\NodeVisitorAbstract;
-use PrestaShop\TranslationToolsBundle\Translation\Extractor\Util\TranslationCollection;
 
 abstract class AbstractTranslationNodeVisitor extends NodeVisitorAbstract implements TranslationVisitorInterface
 {

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file is authored by PrestaShop SA and Contributors <contact@prestashop.com>
  *
@@ -8,12 +10,12 @@
  * file that was distributed with this source code.
  */
 
-namespace  PrestaShop\TranslationToolsBundle;
+namespace PrestaShop\TranslationToolsBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use PrestaShop\TranslationToolsBundle\DependencyInjection\CompilerPass\ExtractorCompilerPass;
 use PrestaShop\TranslationToolsBundle\DependencyInjection\CompilerPass\TranslationCompilerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class TranslationToolsBundle extends Bundle
 {
