@@ -28,19 +28,11 @@ class CrowdinPhpExtractor extends AbstractFileExtractor implements ExtractorInte
      */
     private $prefix = '';
 
-    /** @var CrowdinPhpParser */
-    private $crodwinPhpParser;
-
-    /** @var OriginalStringManager */
-    private $originalStringManager;
-
-    public function __construct(CrowdinPhpParser $crodwinPhpParser, OriginalStringManager $originalStringManager)
+    public function __construct(private CrowdinPhpParser $crodwinPhpParser, private OriginalStringManager $originalStringManager)
     {
-        $this->crodwinPhpParser = $crodwinPhpParser;
-        $this->originalStringManager = $originalStringManager;
     }
 
-    public function extract($resource, MessageCatalogue $catalog)
+    public function extract($resource, MessageCatalogue $catalog): void
     {
         $files = $this->extractFiles($resource);
         foreach ($files as $file) {
@@ -59,14 +51,12 @@ class CrowdinPhpExtractor extends AbstractFileExtractor implements ExtractorInte
                 );
             }
 
-            if (PHP_VERSION_ID >= 70000) {
-                // PHP 7 memory manager will not release after token_get_all(), see https://bugs.php.net/70098
-                gc_mem_caches();
-            }
+            // PHP 7 memory manager will not release after token_get_all(), see https://bugs.php.net/70098
+            gc_mem_caches();
         }
     }
 
-    public function setPrefix($prefix)
+    public function setPrefix($prefix): void
     {
         $this->prefix = $prefix;
     }

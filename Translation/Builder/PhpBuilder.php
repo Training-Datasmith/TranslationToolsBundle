@@ -40,7 +40,7 @@ class PhpBuilder
     /**
      * @param string $varName
      */
-    public function appendGlobalDeclaration($varName)
+    public function appendGlobalDeclaration($varName): void
     {
         $this->output .= 'global ';
         $this->appendVar($varName);
@@ -51,13 +51,11 @@ class PhpBuilder
     /**
      * @param string $varName
      * @param string $key
-     * @param string $value
      *
-     * @return PhpBuilder
      *
      * @throws \Exception
      */
-    public function appendStringLine($varName, $key, $value)
+    public function appendStringLine($varName, $key, string $value): static
     {
         if ($this->pos !== self::POS_NEWLINE) {
             throw new \Exception('Unable to append new line (current pos is ' . $this->pos . ')');
@@ -72,10 +70,7 @@ class PhpBuilder
         return $this;
     }
 
-    /**
-     * @return PhpBuilder
-     */
-    protected function open()
+    protected function open(): static
     {
         $this->output .= '<?php' . PHP_EOL . PHP_EOL;
         $this->pos = self::POS_NEWLINE;
@@ -83,12 +78,7 @@ class PhpBuilder
         return $this;
     }
 
-    /**
-     * @param string $varName
-     *
-     * @return PhpBuilder
-     */
-    protected function appendVar($varName)
+    protected function appendVar(string $varName): static
     {
         $this->output .= '$' . $varName;
         $this->pos = self::POS_VAR;
@@ -96,12 +86,7 @@ class PhpBuilder
         return $this;
     }
 
-    /**
-     * @param string $key
-     *
-     * @return PhpBuilder
-     */
-    protected function appendKey($key)
+    protected function appendKey(string $key): static
     {
         $this->output .= "['" . $key . "']";
         $this->pos = self::POS_ARRAY_KEY;
@@ -109,10 +94,7 @@ class PhpBuilder
         return $this;
     }
 
-    /**
-     * @return PhpBuilder
-     */
-    protected function appendVarAssignation()
+    protected function appendVarAssignation(): static
     {
         $this->output .= ' = ';
         $this->pos = self::POS_ASSIGN;
@@ -122,10 +104,8 @@ class PhpBuilder
 
     /**
      * @param string $value
-     *
-     * @return PhpBuilder
      */
-    protected function appendValue($value)
+    protected function appendValue($value): static
     {
         $this->output .= (string) $value;
         $this->pos = self::POS_VALUE;
@@ -133,10 +113,7 @@ class PhpBuilder
         return $this;
     }
 
-    /**
-     * @return PhpBuilder
-     */
-    protected function appendEndOfLine()
+    protected function appendEndOfLine(): static
     {
         $this->output .= ';' . PHP_EOL;
         $this->pos = self::POS_NEWLINE;

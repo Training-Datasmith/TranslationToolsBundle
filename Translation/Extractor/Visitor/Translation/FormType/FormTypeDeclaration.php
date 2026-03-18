@@ -42,7 +42,7 @@ class FormTypeDeclaration extends AbstractTranslationNodeVisitor
     /**
      * @var bool Indicates if a Use statement for Symfony\Component\Form\AbstractType has been found
      */
-    private $useSfFormAbstractTypeFound = false;
+    private bool $useSfFormAbstractTypeFound = false;
     /**
      * @var string Alias used for AbstractType class in the Use statement (if found)
      */
@@ -51,15 +51,15 @@ class FormTypeDeclaration extends AbstractTranslationNodeVisitor
     /**
      * @var bool Indicates if the we have identified a class that should be inspected by this visitor
      */
-    private $classIsKnownToBeFormType = false;
+    private bool $classIsKnownToBeFormType = false;
     /**
      * @var bool Indicates if we should keep continue to inspect nodes in this file
      */
-    private $continueVisiting = true;
+    private bool $continueVisiting = true;
 
     private $defaultTranslationDomain = '';
 
-    private $defaultTranslationDomainExtractor;
+    private readonly \PrestaShop\TranslationToolsBundle\Translation\Extractor\Visitor\Translation\FormType\DefaultTranslationDomainExtractor $defaultTranslationDomainExtractor;
 
     public function __construct(TranslationCollection $collection)
     {
@@ -68,7 +68,7 @@ class FormTypeDeclaration extends AbstractTranslationNodeVisitor
         $this->defaultTranslationDomainExtractor = new DefaultTranslationDomainExtractor();
     }
 
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): void
     {
         if ($this->shouldTryToExtractWordings($node)) {
             $this->tryToExtractDefaultTranslationDomain($node);
@@ -76,14 +76,14 @@ class FormTypeDeclaration extends AbstractTranslationNodeVisitor
         }
     }
 
-    public function afterTraverse(array $nodes)
+    public function afterTraverse(array $nodes): void
     {
         if ($this->needsPostProcessing()) {
             $this->translations->applyDefaultTranslationDomain($this->defaultTranslationDomain);
         }
     }
 
-    private function needsPostProcessing()
+    private function needsPostProcessing(): bool
     {
         return
             $this->classIsKnownToBeFormType
@@ -91,10 +91,7 @@ class FormTypeDeclaration extends AbstractTranslationNodeVisitor
         ;
     }
 
-    /**
-     * @return bool
-     */
-    private function shouldTryToExtractWordings(Node $node)
+    private function shouldTryToExtractWordings(Node $node): bool
     {
         return
             $this->continueVisiting
@@ -118,10 +115,8 @@ class FormTypeDeclaration extends AbstractTranslationNodeVisitor
 
     /**
      * Check if this node should be inspected
-     *
-     * @return bool
      */
-    private function isAnInterestingNode(Node $node)
+    private function isAnInterestingNode(Node $node): bool
     {
         foreach (self::INTERESTING_NODE_TYPES as $nodeType) {
             if ($node instanceof $nodeType) {
@@ -135,7 +130,7 @@ class FormTypeDeclaration extends AbstractTranslationNodeVisitor
     /**
      * Find out if this node is a Use for a supported form type
      */
-    private function checkIfUseSfAbstractTypeIsPresent(Node $node)
+    private function checkIfUseSfAbstractTypeIsPresent(Node $node): void
     {
         if ($node instanceof Node\Stmt\Use_ && !$this->useSfFormAbstractTypeFound) {
             foreach ($node->uses as $useData) {
@@ -153,7 +148,7 @@ class FormTypeDeclaration extends AbstractTranslationNodeVisitor
     /**
      * Find out if this node is a Class node which extends AbstractType
      */
-    private function checkIfClassDeclarationExtendsSfAbstractType(Node $node)
+    private function checkIfClassDeclarationExtendsSfAbstractType(Node $node): void
     {
         if ($node instanceof Node\Stmt\Class_) {
             if (!$this->useSfFormAbstractTypeFound) {
@@ -167,7 +162,7 @@ class FormTypeDeclaration extends AbstractTranslationNodeVisitor
         }
     }
 
-    private function tryToExtractChoiceWordings(Node $node)
+    private function tryToExtractChoiceWordings(Node $node): void
     {
         if ($node instanceof Node\Expr\MethodCall) {
             $choiceExtractor = new ChoiceExtractor($node, $this->defaultTranslationDomain);
@@ -178,7 +173,7 @@ class FormTypeDeclaration extends AbstractTranslationNodeVisitor
         }
     }
 
-    private function tryToExtractDefaultTranslationDomain($node)
+    private function tryToExtractDefaultTranslationDomain(\PhpParser\Node $node): void
     {
         $extractor = $this->defaultTranslationDomainExtractor;
         if ($extractor->lookForDefaultTranslationDomain($node)) {

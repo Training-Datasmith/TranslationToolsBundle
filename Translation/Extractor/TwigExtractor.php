@@ -27,10 +27,8 @@ class TwigExtractor extends BaseTwigExtractor implements ExtractorInterface
 
     /**
      * Prefix for found message.
-     *
-     * @var string
      */
-    private $prefix = '';
+    private string $prefix = '';
 
     /**
      * The twig environment.
@@ -39,10 +37,7 @@ class TwigExtractor extends BaseTwigExtractor implements ExtractorInterface
      */
     private $twig;
 
-    /**
-     * @var Lexer
-     */
-    private $twigLexer;
+    private \PrestaShop\TranslationToolsBundle\Twig\Lexer $twigLexer;
 
     /**
      * The twig environment.
@@ -54,12 +49,12 @@ class TwigExtractor extends BaseTwigExtractor implements ExtractorInterface
         $this->twig = $twig;
         $this->twigLexer = new Lexer($this->twig);
 
-        $this->twig->registerUndefinedFunctionCallback(function () {});
+        $this->twig->registerUndefinedFunctionCallback(function (): void {});
 
-        $this->twig->registerUndefinedFilterCallback(function () {});
+        $this->twig->registerUndefinedFilterCallback(function (): void {});
     }
 
-    public function extract($resource, MessageCatalogue $catalogue)
+    public function extract($resource, MessageCatalogue $catalogue): void
     {
         $files = $this->extractFiles($resource);
         foreach ($files as $file) {
@@ -106,11 +101,11 @@ class TwigExtractor extends BaseTwigExtractor implements ExtractorInterface
         $comments = $this->twigLexer->getComments();
 
         foreach ($visitor->getMessages() as $message) {
-            $domain = $this->resolveDomain(isset($message[1]) ? $message[1] : null);
+            $domain = $this->resolveDomain($message[1] ?? null);
 
             $catalogue->set(
                 $message[0],
-                $this->prefix . trim($message[0]),
+                $this->prefix . trim((string) $message[0]),
                 $domain
             );
 

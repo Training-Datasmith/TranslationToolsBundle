@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class TranslationToolsExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $definition = $container->register(
             'translation_tools.translation.extension',

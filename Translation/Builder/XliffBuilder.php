@@ -12,10 +12,7 @@ namespace PrestaShop\TranslationToolsBundle\Translation\Builder;
 
 class XliffBuilder
 {
-    /**
-     * @var \DOMDocument
-     */
-    protected $dom;
+    protected \DOMDocument $dom;
 
     /**
      * @var string
@@ -66,10 +63,8 @@ class XliffBuilder
      * @param string $filename
      * @param string $sourceLanguage
      * @param string $targetLanguage
-     *
-     * @return XliffBuilder
      */
-    public function addFile($filename, $sourceLanguage, $targetLanguage)
+    public function addFile($filename, $sourceLanguage, $targetLanguage): static
     {
         if (!isset($this->originalFiles[$filename])) {
             $xliffFile = $this->dom->createElement('file');
@@ -84,10 +79,7 @@ class XliffBuilder
         return $this;
     }
 
-    /**
-     * @return XliffBuilder
-     */
-    public function addTransUnit(string $filename, string $source, string $target, string $note = '')
+    public function addTransUnit(string $filename, string $source, string $target, string $note = ''): static
     {
         $id = md5($source);
         $translation = $this->dom->createElement('trans-unit');
@@ -117,10 +109,8 @@ class XliffBuilder
 
     /**
      * @param string $version
-     *
-     * @return XliffBuilder
      */
-    public function setVersion($version)
+    public function setVersion($version): static
     {
         $this->version = $version;
 

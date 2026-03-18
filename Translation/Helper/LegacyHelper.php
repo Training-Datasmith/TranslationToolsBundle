@@ -26,9 +26,7 @@ class LegacyHelper
                 return [
                     'file' => 'translations/[locale]/admin.php',
                     'var' => '_LANGADM',
-                    'generateKey' => function ($string) use ($inputFilename) {
-                        return self::getKeyPrefix($inputFilename) . self::getKey($string);
-                    },
+                    'generateKey' => fn($string) => self::getKeyPrefix($inputFilename) . self::getKey($string),
                 ];
 
             case preg_match('#^themes/([A-Za-z0-9_]+).+\.tpl$#', $inputFilename, $matches):
@@ -36,9 +34,7 @@ class LegacyHelper
                 return [
                     'file' => 'themes/' . $matches[1] . '/lang/[locale].php',
                     'var' => '_LANG',
-                    'generateKey' => function ($string) use ($inputFilename) {
-                        return pathinfo(basename($inputFilename), PATHINFO_FILENAME) . '_' . self::getKey($string);
-                    },
+                    'generateKey' => fn($string) => pathinfo(basename($inputFilename), PATHINFO_FILENAME) . '_' . self::getKey($string),
                 ];
 
                 // when we get a simple theme
@@ -46,9 +42,7 @@ class LegacyHelper
                 return [
                     'file' => '/lang/[locale].php',
                     'var' => '_LANG',
-                    'generateKey' => function ($string) use ($inputFilename) {
-                        return pathinfo(basename($inputFilename), PATHINFO_FILENAME) . '_' . self::getKey($string);
-                    },
+                    'generateKey' => fn($string) => pathinfo(basename($inputFilename), PATHINFO_FILENAME) . '_' . self::getKey($string),
                 ];
 
             case preg_match('#override/classes/pdf/(?!index)\w+\.php$#', $inputFilename):
@@ -56,45 +50,35 @@ class LegacyHelper
                 return [
                     'file' => 'translations/[locale]/pdf.php',
                     'var' => '_LANGPDF',
-                    'generateKey' => function ($string) {
-                        return 'PDF' . self::getKey($string);
-                    },
+                    'generateKey' => fn($string) => 'PDF' . self::getKey($string),
                 ];
 
             case preg_match('#(?:/|^)modules/([A-Za-z0-9_]+)/#', $inputFilename, $matches):
                 return [
                     'file' => 'modules/' . $matches[1] . '/translations/[locale].php',
                     'var' => '_MODULE',
-                    'generateKey' => function ($string) use ($inputFilename, $matches) {
-                        return '<{' . $matches[1] . '}prestashop>' . pathinfo(basename($inputFilename), PATHINFO_FILENAME) . '_' . self::getKey($string);
-                    },
+                    'generateKey' => fn($string) => '<{' . $matches[1] . '}prestashop>' . pathinfo(basename($inputFilename), PATHINFO_FILENAME) . '_' . self::getKey($string),
                 ];
 
             case preg_match('#^mails/#', $inputFilename):
                 return [
                     'file' => 'mails/[locale]/lang.php',
                     'var' => '_LANGMAIL',
-                    'generateKey' => function ($string) {
-                        return $string;
-                    },
+                    'generateKey' => fn($string) => $string,
                 ];
 
             case preg_match('/fields_catalogue.php$/', $inputFilename):
                 return [
                     'file' => 'translations/[locale]/fields.php',
                     'var' => '_FIELDS',
-                    'generateKey' => function ($string, $domain) {
-                        return $domain . '_' . md5($string);
-                    },
+                    'generateKey' => fn($string, $domain) => $domain . '_' . md5((string) $string),
                 ];
 
             case preg_match('#controllers/admin/([A-Za-z]+)Controller.php$#', $inputFilename):
                 return [
                     'file' => 'translations/[locale]/tabs.php',
                     'var' => '_TABS',
-                    'generateKey' => function () use ($inputFilename) {
-                        return self::getKeyPrefix($inputFilename);
-                    },
+                    'generateKey' => fn() => self::getKeyPrefix($inputFilename),
                 ];
 
                 //            case !preg_match('#tools/|cache/|\.tpl\.php$|[a-z]{2}\.php$#', $inputFilename) && preg_match('/\.php$/', $inputFilename):
@@ -110,12 +94,10 @@ class LegacyHelper
 
     /**
      * @param string $string
-     *
-     * @return string
      */
-    public static function getKey($string)
+    public static function getKey($string): string
     {
-        return md5(preg_replace("/\\\*'/", "\'", $string));
+        return md5((string) preg_replace("/\\\*'/", "\'", $string));
     }
 
     /**
@@ -134,10 +116,10 @@ class LegacyHelper
             case $fileName === 'PaymentModule.php':
                 return 'PaymentModule';
 
-            case strpos($file, 'Helper') !== false:
+            case str_contains($file, 'Helper'):
                 return 'Helper';
 
-            case strpos($file, 'Controller.php') !== false:
+            case str_contains($file, 'Controller.php'):
                 return basename(substr($file, 0, -14));
         }
     }

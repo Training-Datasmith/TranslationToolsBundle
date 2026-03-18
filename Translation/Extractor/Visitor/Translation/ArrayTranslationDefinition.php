@@ -33,7 +33,7 @@ use PhpParser\Node\Scalar\String_;
  */
 class ArrayTranslationDefinition extends AbstractTranslationNodeVisitor
 {
-    public function leaveNode(Node $node)
+    public function leaveNode(Node $node): void
     {
         $this->translations->add($this->extractFrom($node));
     }
@@ -41,7 +41,7 @@ class ArrayTranslationDefinition extends AbstractTranslationNodeVisitor
     /**
      * @return array Array of translations to add
      */
-    public function extractFrom(Node $node)
+    public function extractFrom(Node $node): array
     {
         if (!$this->appliesFor($node)) {
             return [];
@@ -92,10 +92,7 @@ class ArrayTranslationDefinition extends AbstractTranslationNodeVisitor
         return [$translation];
     }
 
-    /**
-     * @return bool
-     */
-    private function appliesFor(Node $node)
+    private function appliesFor(Node $node): bool
     {
         return
             $node instanceof Node\Expr\Array_

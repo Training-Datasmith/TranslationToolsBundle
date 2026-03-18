@@ -17,7 +17,7 @@ use PrestaShop\TranslationToolsBundle\DependencyInjection\CompilerPass\Translati
 
 class TranslationToolsBundle extends Bundle
 {
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new ExtractorCompilerPass());
         $container->addCompilerPass(new TranslationCompilerPass());

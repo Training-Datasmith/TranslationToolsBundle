@@ -16,15 +16,10 @@ use Symfony\Component\Finder\Finder;
 
 class TranslationManager
 {
-    /** @var MultilanguageCatalog */
-    private $catalog;
+    private readonly \PrestaShop\TranslationToolsBundle\Translation\MultilanguageCatalog $catalog;
 
-    /** @var CrowdinPhpParser */
-    private $parser;
-
-    public function __construct(CrowdinPhpParser $crodwinPhpParser)
+    public function __construct(private readonly CrowdinPhpParser $parser)
     {
-        $this->parser = $crodwinPhpParser;
         $this->catalog = new MultilanguageCatalog();
     }
 
@@ -51,7 +46,7 @@ class TranslationManager
         $finder = new Finder();
 
         $fullpath = preg_replace('/([a-z]{2}-[A-Z]{2})/', '*', $filePath);
-        $filename = basename($fullpath);
+        $filename = basename((string) $fullpath);
         $directory = pathinfo(str_replace('*', '', $fullpath), PATHINFO_DIRNAME);
 
         if (!file_exists($directory)) {

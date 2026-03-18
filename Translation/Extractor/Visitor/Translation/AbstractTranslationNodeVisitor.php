@@ -15,14 +15,8 @@ use PrestaShop\TranslationToolsBundle\Translation\Extractor\Util\TranslationColl
 
 abstract class AbstractTranslationNodeVisitor extends NodeVisitorAbstract implements TranslationVisitorInterface
 {
-    /**
-     * @var TranslationCollection
-     */
-    protected $translations;
-
-    public function __construct(TranslationCollection $collection)
+    public function __construct(protected \PrestaShop\TranslationToolsBundle\Translation\Extractor\Util\TranslationCollection $translations)
     {
-        $this->translations = $collection;
     }
 
     public function getTranslationCollection()

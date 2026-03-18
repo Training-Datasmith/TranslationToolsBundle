@@ -22,30 +22,16 @@ class SmartyExtractor extends AbstractFileExtractor implements ExtractorInterfac
 
     public const INCLUDE_EXTERNAL_MODULES = true;
     public const EXCLUDE_EXTERNAL_MODULES = false;
-
-    /**
-     * @var TranslationTemplateCompiler
-     */
-    private $smartyCompiler;
     private $prefix;
-
-    /**
-     * @var bool
-     */
-    private $includeExternalWordings;
 
     /**
      * @param bool $includeExternalWordings Set to SmartyCompiler::INCLUDE_EXTERNAL_MODULES to include wordings signed with 'mod' (external modules)
      */
-    public function __construct(
-        TranslationTemplateCompiler $smartyCompiler,
-        $includeExternalWordings = self::EXCLUDE_EXTERNAL_MODULES,
-    ) {
-        $this->smartyCompiler = $smartyCompiler;
-        $this->includeExternalWordings = $includeExternalWordings;
+    public function __construct(private TranslationTemplateCompiler $smartyCompiler, private $includeExternalWordings = self::EXCLUDE_EXTERNAL_MODULES)
+    {
     }
 
-    public function extract($resource, MessageCatalogue $catalogue)
+    public function extract($resource, MessageCatalogue $catalogue): void
     {
         $files = $this->extractFiles($resource);
         foreach ($files as $file) {
@@ -81,7 +67,7 @@ class SmartyExtractor extends AbstractFileExtractor implements ExtractorInterfac
             }
 
             $domain = $this->resolveDomain($extractedDomain);
-            $string = stripslashes($translation['tag']['s']);
+            $string = stripslashes((string) $translation['tag']['s']);
 
             $catalogue->set($this->prefix . $string, $string, $domain);
             $catalogue->setMetadata(
@@ -95,14 +81,14 @@ class SmartyExtractor extends AbstractFileExtractor implements ExtractorInterfac
         }
     }
 
-    public function setPrefix($prefix)
+    public function setPrefix($prefix): void
     {
         $this->prefix = $prefix;
     }
 
     protected function canBeExtracted($file)
     {
-        return $this->isFile($file) && 'tpl' === pathinfo($file, PATHINFO_EXTENSION);
+        return $this->isFile($file) && 'tpl' === pathinfo((string) $file, PATHINFO_EXTENSION);
     }
 
     protected function extractFromDirectory($directory)

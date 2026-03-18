@@ -14,10 +14,8 @@ class DomainHelper
 {
     /**
      * @param string $localPath
-     *
-     * @return string
      */
-    public static function getCrowdinPath($localPath)
+    public static function getCrowdinPath($localPath): string
     {
         $segments = explode(DIRECTORY_SEPARATOR, $localPath);
         $directorySegments = array_slice($segments, 0, 2);
@@ -31,20 +29,16 @@ class DomainHelper
 
     /**
      * @param string $domain
-     *
-     * @return string
      */
-    public static function getExportPath($domain)
+    public static function getExportPath($domain): string
     {
         return str_replace('.', DIRECTORY_SEPARATOR, $domain);
     }
 
     /**
      * @param string $exportPath
-     *
-     * @return string
      */
-    public static function getDomain($exportPath)
+    public static function getDomain($exportPath): string
     {
         return str_replace(DIRECTORY_SEPARATOR, '.', $exportPath);
     }
@@ -57,7 +51,7 @@ class DomainHelper
      *
      * @return string The domain name (eg. Modules.Psthemecusto.somefile)
      */
-    public static function buildModuleDomainFromLegacySource($moduleName, $sourceFileName)
+    public static function buildModuleDomainFromLegacySource($moduleName, $sourceFileName): string
     {
         $transformedModuleName = self::buildModuleDomainNameComponent($moduleName);
 
@@ -67,16 +61,14 @@ class DomainHelper
             $source = strtolower(basename($sourceFileName, '.tpl'));
 
             // sourced from https://github.com/PrestaShop/PrestaShop/blob/1.6.1.x/classes/Translate.php#L174-L178
-            if ('controller' == substr($source, -10, 10)) {
+            if (str_ends_with($source, 'controller')) {
                 $source = substr($source, 0, -10);
             }
 
             $source = ucfirst($source);
         }
 
-        $domain = 'Modules.' . $transformedModuleName . '.' . $source;
-
-        return $domain;
+        return 'Modules.' . $transformedModuleName . '.' . $source;
     }
 
     /**
@@ -84,10 +76,8 @@ class DomainHelper
      *
      * @param string $moduleName
      * @param bool $withDots True to use separating dots
-     *
-     * @return string
      */
-    public static function buildModuleBaseDomain($moduleName, $withDots = false)
+    public static function buildModuleBaseDomain($moduleName, $withDots = false): string
     {
         $domain = 'Modules';
 
@@ -95,9 +85,7 @@ class DomainHelper
             $domain .= '.';
         }
 
-        $domain .= self::buildModuleDomainNameComponent($moduleName);
-
-        return $domain;
+        return $domain . self::buildModuleDomainNameComponent($moduleName);
     }
 
     /**
@@ -109,7 +97,7 @@ class DomainHelper
      */
     private static function buildModuleDomainNameComponent($moduleName)
     {
-        if ('ps_' === substr($moduleName, 0, 3)) {
+        if (str_starts_with($moduleName, 'ps_')) {
             $moduleName = substr($moduleName, 3);
         }
 
@@ -120,10 +108,8 @@ class DomainHelper
      * Formats a domain component by removing unwanted characters
      *
      * @param string $component
-     *
-     * @return string
      */
-    private static function transformDomainComponent($component)
+    private static function transformDomainComponent($component): string
     {
         return ucfirst(
             strtr(

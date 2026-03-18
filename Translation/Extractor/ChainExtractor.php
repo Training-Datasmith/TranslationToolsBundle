@@ -23,7 +23,7 @@ class ChainExtractor extends BaseChaineExtractor
      *
      * @var ExtractorInterface[]
      */
-    private $extractors = [];
+    private array $extractors = [];
 
     /**
      * @param string $format
@@ -37,7 +37,7 @@ class ChainExtractor extends BaseChaineExtractor
         return $this;
     }
 
-    public function extract($directory, MessageCatalogue $catalogue)
+    public function extract($directory, MessageCatalogue $catalogue): void
     {
         $finder = new Finder();
 

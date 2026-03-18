@@ -18,8 +18,6 @@ use PhpParser\NodeVisitorAbstract;
  */
 class CommentsNodeVisitor extends NodeVisitorAbstract
 {
-    protected $file;
-
     /**
      * @var array
      */
@@ -28,12 +26,11 @@ class CommentsNodeVisitor extends NodeVisitorAbstract
     /**
      * TranslationNodeVisitor constructor.
      */
-    public function __construct($file)
+    public function __construct(protected $file)
     {
-        $this->file = $file;
     }
 
-    public function leaveNode(Node $node)
+    public function leaveNode(Node $node): void
     {
         $this->tryExtractComments($node);
     }
@@ -46,7 +43,7 @@ class CommentsNodeVisitor extends NodeVisitorAbstract
         return $this->comments;
     }
 
-    private function tryExtractComments(Node $node)
+    private function tryExtractComments(Node $node): void
     {
         $comments = $node->getAttribute('comments');
 
@@ -55,7 +52,7 @@ class CommentsNodeVisitor extends NodeVisitorAbstract
                 $this->comments[] = [
                     'line' => $comment->getLine(),
                     'file' => $this->file,
-                    'comment' => trim($comment->getText(), " \t\n\r\0\x0B/*"),
+                    'comment' => trim((string) $comment->getText(), " \t\n\r\0\x0B/*"),
                 ];
             }
         }

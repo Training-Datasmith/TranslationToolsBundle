@@ -37,14 +37,14 @@ $_FIELDS['Address_d56f5e97524d5d1ad77ec197ae11dad0'] = 'dni';
 
 $catalogue = new Symfony\Component\Translation\MessageCatalogue();
 
-function addEntry($catalogue, $original, $translation, $domain = 'messages')
+function addEntry($catalogue, $original, $translation, $domain = 'messages'): void
 {
     $catalogue->set($original, $translation, $domain);
     $catalogue->setMetadata($original, ['line' => 0, 'file' => __FILE__], $domain);
 }
 
 foreach ($_FIELDS as $key => $value) {
-    addEntry($catalogue, $value, $value, reset(explode('_', $key)));
+    addEntry($catalogue, $value, $value, reset(explode('_', (string) $key)));
 }
 
 return $catalogue;

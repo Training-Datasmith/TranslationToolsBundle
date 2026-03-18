@@ -15,18 +15,13 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 class OriginalStringManager
 {
-    /** @var string */
-    private $defaultLocale = 'en-US';
+    private string $defaultLocale = 'en-US';
 
     /** @var MessageCatalogue */
     private $catalogue;
 
-    /** @var CrowdinPhpParser */
-    private $parser;
-
-    public function __construct(CrowdinPhpParser $crodwinPhpParser)
+    public function __construct(private readonly CrowdinPhpParser $parser)
     {
-        $this->parser = $crodwinPhpParser;
         $this->catalogue = new MessageCatalogue($this->defaultLocale);
     }
 
@@ -48,7 +43,7 @@ class OriginalStringManager
     /**
      * @param string $filePath
      */
-    private function extractFile($filePath)
+    private function extractFile($filePath): void
     {
         preg_match('/([a-z]{2}-[A-Z]{2})/', $filePath, $matches);
         $locale = end($matches);

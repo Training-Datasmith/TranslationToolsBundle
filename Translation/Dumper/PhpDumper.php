@@ -21,9 +21,9 @@ class PhpDumper extends FileDumper
     /**
      * @var PhpBuilder[]
      */
-    private $builders = [];
+    private array $builders = [];
 
-    public function dump(MessageCatalogue $messages, $options = [])
+    public function dump(MessageCatalogue $messages, $options = []): void
     {
         if (!array_key_exists('path', $options)) {
             throw new \InvalidArgumentException('The file dumper needs a path option.');

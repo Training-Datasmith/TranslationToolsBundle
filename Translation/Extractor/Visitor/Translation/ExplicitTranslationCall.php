@@ -19,12 +19,15 @@ class ExplicitTranslationCall extends AbstractTranslationNodeVisitor
 {
     public const SUPPORTED_METHODS = ['l', 'trans', 't'];
 
-    public function leaveNode(Node $node)
+    public function leaveNode(Node $node): void
     {
         $this->translations->add($this->extractFrom($node));
     }
 
-    public function extractFrom(Node $node)
+    /**
+     * @return array<mixed, array<'source', mixed>>
+     */
+    public function extractFrom(Node $node): array
     {
         if (!$this->appliesFor($node)) {
             return [];
@@ -79,14 +82,12 @@ class ExplicitTranslationCall extends AbstractTranslationNodeVisitor
     {
         if ($arg->value instanceof Node\Scalar\String_) {
             return $arg->value->value;
-        } elseif (gettype($arg) === 'string') {
+        }
+        if (gettype($arg) === 'string') {
             return $arg->value;
         }
     }
 
-    /**
-     * @param Node|Node\Expr\MethodCall|Node\Expr\FuncCall $node
-     */
     private function getNodeName(Node $node)
     {
         if ($node->name instanceof Node\Name) {

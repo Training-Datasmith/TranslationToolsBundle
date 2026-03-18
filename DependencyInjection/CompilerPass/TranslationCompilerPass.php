@@ -15,11 +15,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class TranslationCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $container->register(
             'translation_tools.translation.node_visitor',
-            'PrestaShop\TranslationToolsBundle\Twig\NodeVisitor\TranslationNodeVisitor'
+            \PrestaShop\TranslationToolsBundle\Twig\NodeVisitor\TranslationNodeVisitor::class
         );
     }
 }

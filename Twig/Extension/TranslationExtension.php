@@ -20,12 +20,9 @@ class TranslationExtension extends AbstractExtension
     /**
      * @var BaseTranslationExtension
      */
-    protected $baseTranslationExtension;
+    protected \Symfony\Bridge\Twig\Extension\TranslationExtension $baseTranslationExtension;
 
-    /**
-     * @var TranslationNodeVisitor
-     */
-    protected $nodeVisitors;
+    protected \PrestaShop\TranslationToolsBundle\Twig\NodeVisitor\TranslationNodeVisitor $nodeVisitors;
 
     public function __construct()
     {

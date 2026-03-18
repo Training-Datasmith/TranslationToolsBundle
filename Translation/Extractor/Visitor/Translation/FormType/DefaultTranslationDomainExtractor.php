@@ -50,24 +50,18 @@ class DefaultTranslationDomainExtractor
 
     /**
      * The extracted default translation domain
-     *
-     * @var string
      */
-    private $defaultTranslationDomain = '';
+    private string $defaultTranslationDomain = '';
 
     /**
      * Indicates if the default translation domain has been found
-     *
-     * @var bool
      */
-    private $defaultTranslationDomainFound = false;
+    private bool $defaultTranslationDomainFound = false;
 
     /**
      * Indicates if we are currently analyzing nodes inside the configureOptions method declaration
-     *
-     * @var bool
      */
-    private $insideConfigureOptions = false;
+    private bool $insideConfigureOptions = false;
 
     /**
      * Name of the OptionsResolver parameter in the configureOptions method declaration
@@ -76,10 +70,7 @@ class DefaultTranslationDomainExtractor
      */
     private $optionsResolverName = '';
 
-    /**
-     * @return bool
-     */
-    public function lookForDefaultTranslationDomain(Node $node)
+    public function lookForDefaultTranslationDomain(Node $node): bool
     {
         return
             $this->isAnInterestingNode($node)
@@ -120,10 +111,8 @@ class DefaultTranslationDomainExtractor
 
     /**
      * Check if this node should be inspected
-     *
-     * @return bool
      */
-    private function isAnInterestingNode(Node $node)
+    private function isAnInterestingNode(Node $node): bool
     {
         foreach (self::INTERESTING_NODE_TYPES as $nodeType) {
             if ($node instanceof $nodeType) {
@@ -155,10 +144,7 @@ class DefaultTranslationDomainExtractor
         return $this->insideConfigureOptions;
     }
 
-    /**
-     * @return bool
-     */
-    private function nodeIsConfigurationOptionsMethod(Node\Stmt\ClassMethod $node)
+    private function nodeIsConfigurationOptionsMethod(Node\Stmt\ClassMethod $node): bool
     {
         /* @var $node->name Identifier */
         return $node->name->name === self::CONFIGURE_OPTIONS;
@@ -180,10 +166,7 @@ class DefaultTranslationDomainExtractor
         return '';
     }
 
-    /**
-     * @return bool
-     */
-    private function isDefaultsDeclaration(Node $node)
+    private function isDefaultsDeclaration(Node $node): bool
     {
         return $node instanceof Node\Expr\MethodCall
             && $node->var instanceof Node\Expr\Variable
@@ -194,10 +177,7 @@ class DefaultTranslationDomainExtractor
         ;
     }
 
-    /**
-     * @return bool
-     */
-    private function extractDefaultTranslationDomain(Node\Expr\MethodCall $node)
+    private function extractDefaultTranslationDomain(Node\Expr\MethodCall $node): bool
     {
         $defaults = $node->args[0];
         if ($defaults instanceof Node\Arg
@@ -220,10 +200,7 @@ class DefaultTranslationDomainExtractor
         return false;
     }
 
-    /**
-     * @param string $defaultTranslationDomain
-     */
-    private function setDefaultTranslationDomain($defaultTranslationDomain)
+    private function setDefaultTranslationDomain(string $defaultTranslationDomain): void
     {
         $this->defaultTranslationDomain = $defaultTranslationDomain;
         $this->defaultTranslationDomainFound = true;

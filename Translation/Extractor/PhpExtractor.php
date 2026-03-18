@@ -60,7 +60,7 @@ class PhpExtractor extends AbstractFileExtractor implements ExtractorInterface
         $this->parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7, $lexer);
     }
 
-    public function extract($resource, MessageCatalogue $catalogue)
+    public function extract($resource, MessageCatalogue $catalogue): void
     {
         $files = $this->extractFiles($resource);
 
@@ -69,7 +69,7 @@ class PhpExtractor extends AbstractFileExtractor implements ExtractorInterface
         }
     }
 
-    public function setPrefix($prefix)
+    public function setPrefix($prefix): void
     {
         $this->prefix = $prefix;
     }
@@ -115,7 +115,7 @@ class PhpExtractor extends AbstractFileExtractor implements ExtractorInterface
 
                 $catalog->set(
                     $translation['source'],
-                    $this->prefix . trim($translation['source']),
+                    $this->prefix . trim((string) $translation['source']),
                     $translation['domain']
                 );
 

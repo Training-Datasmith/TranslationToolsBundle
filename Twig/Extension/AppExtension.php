@@ -36,7 +36,7 @@ class AppExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('renderhooksarray', [$this, 'transChoice']),
+            new TwigFunction('renderhooksarray', $this->transChoice(...)),
         ];
     }
 

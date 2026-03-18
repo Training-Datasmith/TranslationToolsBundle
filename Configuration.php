@@ -15,15 +15,9 @@ use Symfony\Component\Yaml\Yaml;
 
 class Configuration
 {
-    /**
-     * @var array
-     */
-    private static $paths = [];
+    private static array $paths = [];
 
-    /**
-     * @var array
-     */
-    private static $excludeFiles = [];
+    private static array $excludeFiles = [];
 
     /**
      * @var string
@@ -35,10 +29,7 @@ class Configuration
      */
     private static $cacheDir;
 
-    /**
-     * @param array $arr
-     */
-    public static function fromArray(array $arr)
+    public static function fromArray(array $arr): void
     {
         $optionsResolver = new OptionsResolver();
         $options = $optionsResolver->setRequired([
@@ -61,7 +52,7 @@ class Configuration
     /**
      * @param string $yamlFile
      */
-    public static function fromYamlFile($yamlFile)
+    public static function fromYamlFile($yamlFile): void
     {
         self::$projectDirectory = realpath(dirname($yamlFile));
         self::fromArray(Yaml::parse(file_get_contents($yamlFile)));
@@ -91,13 +82,7 @@ class Configuration
         return self::$projectDirectory;
     }
 
-    /**
-     * @param string $path
-     * @param string|null $rootDir
-     *
-     * @return string
-     */
-    public static function getRelativePath(string $path, ?string $rootDir = null)
+    public static function getRelativePath(string $path, ?string $rootDir = null): string
     {
         $realpath = realpath($path);
         $path = empty($realpath) ? $path : $realpath;

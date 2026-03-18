@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class ExtractorCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         foreach ($container->findTaggedServiceIds('prestashop.translation.extractor') as $id => $attributes) {
             $container->getDefinition('prestashop.translation.chainextractor')->addMethodCall('addExtractor', [reset($attributes)['format'], new Reference($id)]);

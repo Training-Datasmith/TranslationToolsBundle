@@ -24,10 +24,7 @@ class TranslationTemplateCompiler extends \Smarty_Internal_SmartyTemplateCompile
      */
     public $tag_nocache = false;
 
-    /**
-     * @var bool
-     */
-    private $abort_and_recompile = false;
+    private bool $abort_and_recompile = false;
 
     /**
      * @var string
@@ -63,7 +60,7 @@ class TranslationTemplateCompiler extends \Smarty_Internal_SmartyTemplateCompile
                 }
 
                 $this->parser->yy_accept();
-            } catch (\SmartyException $e) {
+            } catch (\SmartyException) {
             }
         }
 
@@ -84,7 +81,7 @@ class TranslationTemplateCompiler extends \Smarty_Internal_SmartyTemplateCompile
         return $this;
     }
 
-    private function init()
+    private function init(): void
     {
         /* here is where the compiling takes place. Smarty
           tags in the templates are replaces with PHP code,
@@ -103,17 +100,13 @@ class TranslationTemplateCompiler extends \Smarty_Internal_SmartyTemplateCompile
     /**
      * @param string $string
      * @param int|null $token
-     *
-     * @return string
      */
-    private function naturalize($string, $token = null)
+    private function naturalize($string, $token = null): string
     {
-        switch ($token) {
-            case \Smarty_Internal_Templateparser::TP_TEXT:
-                return trim($string, " \t\n\r\0\x0B{*}");
-            default:
-                return substr($string, 1, -1);
-        }
+        return match ($token) {
+            \Smarty_Internal_Templateparser::TP_TEXT => trim($string, " \t\n\r\0\x0B{*}"),
+            default => substr($string, 1, -1),
+        };
     }
 
     /**
@@ -132,7 +125,7 @@ class TranslationTemplateCompiler extends \Smarty_Internal_SmartyTemplateCompile
                 foreach ($entry->minor as $minor) {
                     foreach ($minor as $attr => $val) {
                         // Skip on variables
-                        if (0 === strpos($val, '$') && 's' === $attr) {
+                        if (str_starts_with((string) $val, '$') && 's' === $attr) {
                             return;
                         }
 
@@ -145,10 +138,7 @@ class TranslationTemplateCompiler extends \Smarty_Internal_SmartyTemplateCompile
         return $tag;
     }
 
-    /**
-     * @return array
-     */
-    private function getTag(array $value, \SmartyCompilerException $exception, array $previousComment)
+    private function getTag(array $value, \SmartyCompilerException $exception, array $previousComment): array
     {
         $tag = [
             'tag' => $value,

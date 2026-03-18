@@ -30,7 +30,7 @@ class XliffFileDumper extends BaseXliffFileDumper
      *
      * @return string The relative file path
      */
-    private function getRelativePath($domain, $locale)
+    private function getRelativePath($domain, $locale): string
     {
         return strtr($this->relativePathTemplate, [
             '%locale%' => $locale,
@@ -45,10 +45,8 @@ class XliffFileDumper extends BaseXliffFileDumper
      *   'root_dir' => Root folder for PrestaShop,
      *   'default_locale' => Default locale (en by default),
      *   'split_files' => Boolean, indicates of th XLIFF files must split the trans units into separate files nodes (default: true),
-     *
-     * @return void
      */
-    public function dump(MessageCatalogue $messages, array $options = [])
+    public function dump(MessageCatalogue $messages, array $options = []): void
     {
         if (!array_key_exists('path', $options)) {
             throw new \InvalidArgumentException('The file dumper needs a path option.');
@@ -170,11 +168,9 @@ class XliffFileDumper extends BaseXliffFileDumper
     }
 
     /**
-     * @param array $transMetadata
-     *
      * @return string
      */
-    private function getNote($transMetadata)
+    private function getNote(array $transMetadata)
     {
         $notes = [];
 

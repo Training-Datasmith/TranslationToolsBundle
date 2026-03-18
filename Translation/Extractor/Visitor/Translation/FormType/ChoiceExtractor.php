@@ -46,25 +46,13 @@ class ChoiceExtractor
     public const CHOICE_CLASS_NAME = 'ChoiceType';
 
     /**
-     * @var Node|Node\Expr\MethodCall
+     * @param string $defaultTranslationDomain
      */
-    private $rootNode;
-
-    /**
-     * @var string
-     */
-    private $defaultTranslationDomain;
-
-    public function __construct(Node $node, $defaultTranslationDomain = '')
+    public function __construct(private readonly Node $rootNode, private $defaultTranslationDomain = '')
     {
-        $this->rootNode = $node;
-        $this->defaultTranslationDomain = $defaultTranslationDomain;
     }
 
-    /**
-     * @return bool
-     */
-    public function isChoiceDeclaration()
+    public function isChoiceDeclaration(): bool
     {
         $node = $this->rootNode;
 
@@ -84,7 +72,7 @@ class ChoiceExtractor
      *
      * @return array[] Translation items
      */
-    public function getChoiceWordings()
+    public function getChoiceWordings(): array
     {
         $choices = [];
 
@@ -103,7 +91,7 @@ class ChoiceExtractor
                     );
                 }
             }
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             // choices not found
             return [];
         }
@@ -126,7 +114,7 @@ class ChoiceExtractor
             }
 
             return $translationDomainNode->value;
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             // translation domain is optional, return the default
             return $this->defaultTranslationDomain;
         }
@@ -170,7 +158,7 @@ class ChoiceExtractor
      *
      * @return Node\Expr Node
      */
-    private function getOptionNodeByKey($optionName, Node\Expr\Array_ $optionsNode)
+    private function getOptionNodeByKey(string $optionName, Node\Expr\Array_ $optionsNode): \PhpParser\Node\Expr
     {
         foreach ($optionsNode->items as $option) {
             if ($option instanceof Node\Expr\ArrayItem
@@ -184,10 +172,7 @@ class ChoiceExtractor
         throw new \RuntimeException(sprintf('Could not the requested option "%s"', $optionName));
     }
 
-    /**
-     * @return bool
-     */
-    private function argIsChoiceType(Node\Arg $node)
+    private function argIsChoiceType(Node\Arg $node): bool
     {
         return
             $node->value instanceof Node\Expr\ClassConstFetch

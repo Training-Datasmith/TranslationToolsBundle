@@ -12,7 +12,7 @@ namespace PrestaShop\TranslationToolsBundle\Translation\Extractor\Util;
 
 class TranslationCollection
 {
-    private $translations = [];
+    private array $translations = [];
 
     /**
      * Creates a new translation item. Note that it is not added to the collection.
@@ -23,15 +23,13 @@ class TranslationCollection
      *
      * @return array Translation item
      */
-    public static function newTranslationItem($source, $line, $domain = '')
+    public static function newTranslationItem($source, $line, $domain = ''): array
     {
-        $translation = [
+        return [
             'source' => $source,
             'line' => $line,
             'domain' => $domain,
         ];
-
-        return $translation;
     }
 
     /**
@@ -39,7 +37,7 @@ class TranslationCollection
      *
      * @param array[] $translations Array of translation items
      */
-    public function add(array $translations)
+    public function add(array $translations): void
     {
         if (!empty($translations)) {
             $this->translations = array_merge($this->translations, $translations);
@@ -51,7 +49,7 @@ class TranslationCollection
      *
      * @param string $domain
      */
-    public function applyDefaultTranslationDomain($domain)
+    public function applyDefaultTranslationDomain($domain): void
     {
         foreach ($this->translations as &$translation) {
             if (empty($translation['domain'])) {

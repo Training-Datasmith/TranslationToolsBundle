@@ -20,22 +20,22 @@ class TranslationNodeVisitor extends AbstractNodeVisitor
     /**
      * @var BaseTranslationNodeVisitor
      */
-    private $baseTranslationNodeVisitor;
+    private readonly \Symfony\Bridge\Twig\NodeVisitor\TranslationNodeVisitor $baseTranslationNodeVisitor;
 
-    private $messages = [];
+    private array $messages = [];
 
     public function __construct()
     {
         $this->baseTranslationNodeVisitor = new BaseTranslationNodeVisitor();
     }
 
-    public function enable()
+    public function enable(): void
     {
         $this->messages = [];
         $this->baseTranslationNodeVisitor->enable();
     }
 
-    public function disable()
+    public function disable(): void
     {
         $this->messages = [];
         $this->baseTranslationNodeVisitor->disable();

@@ -13,15 +13,13 @@ namespace PrestaShop\TranslationToolsBundle\Translation;
 class MultilanguageCatalog
 {
     /** @var [] (key/locale) */
-    private $messages = [];
+    private array $messages = [];
 
     /**
      * @param string|int $key
      * @param string|int $locale
-     *
-     * @return bool
      */
-    public function has($key, $locale = null)
+    public function has($key, $locale = null): bool
     {
         return !empty($this->messages[$key]) && (is_null($locale) || !empty($this->messages[$key][$locale]));
     }
@@ -43,7 +41,7 @@ class MultilanguageCatalog
      * @param string|int $key
      * @param string|int $locale
      */
-    public function set($key, $locale, $translation)
+    public function set($key, $locale, $translation): static
     {
         if (!isset($this->messages[$key])) {
             $this->messages[$key] = [];
